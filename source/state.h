@@ -45,7 +45,9 @@ protected:
 	Sounds* delete_line_sound;
 	Sounds* option_change_sound;
 	Sounds* rotate_sound;
+	Sounds* hold_sound;
 	Sounds* gameover_sound;
+	Sounds* countdown_sound;
 public:
 	StateID nextStateID;
 	State(InputHandle* input_handle);

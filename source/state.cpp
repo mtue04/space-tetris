@@ -59,8 +59,12 @@ void State::load_sounds() {
     option_change_sound->load_sound("assets/sound/option-change.wav");
     rotate_sound = new Sounds();
     rotate_sound->load_sound("assets/sound/rotate.wav");
+    hold_sound = new Sounds();
+    hold_sound->load_sound("assets/sound/hold.wav");
     gameover_sound = new Sounds();
     gameover_sound->load_sound("assets/sound/gameover.wav");
+    countdown_sound = new Sounds();
+    countdown_sound->load_sound("assets/sound/countdown.wav");
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -149,7 +153,7 @@ void GameState::run() {
             game_just_started = false;
         }
         unsigned long long ms_passed = SDL_GetTicks() - time_snap1;
-        if (ms_passed < 3000) {
+        if (ms_passed < 4000) {
             while (input_handle->poll_action()) {
                 if (input_handle->is_quit_game()) {
                     nextStateID = STATE_EXIT;
@@ -162,9 +166,14 @@ void GameState::run() {
             }
             Game::get_instance()->m_renderer->clear_screen();
             draw();
-            int countdown_time = ceil((3000 - ms_passed) / 1000.0);             // The time left on the countdown
-            if (countdown_time >= 0) {
-                countdown_texture->load_text(to_string(countdown_time), Game::get_instance()->m_renderer->medium_font, default_text_color);
+            int countdown_time = ceil((4000 - ms_passed) / 1000.0);             // The time left on the countdown
+            countdown_sound->play_sound();
+            if (countdown_time > 1) {
+                countdown_texture->load_text(to_string(countdown_time - 1), Game::get_instance()->m_renderer->cd_font, default_text_color);
+                Game::get_instance()->m_renderer->render_texture(countdown_texture, width_window / 2, height_window / 2);
+            } else if (countdown_time >= 0) {
+                string fight = "FIGHT!";
+                countdown_texture->load_text(fight, Game::get_instance()->m_renderer->cd_font, default_text_color);
                 Game::get_instance()->m_renderer->render_texture(countdown_texture, width_window / 2, height_window / 2);
             }
             Game::get_instance()->m_renderer->update_screen();
@@ -326,6 +335,7 @@ void GameState::handle_event(Action action) {
             current_block.set_rotation((current_block.get_rotation() + 1) % 4);
         break;
     case Action::hold:
+        hold_sound->play_sound();
         if (hold_block_first_time) {
             hold_block = Block(current_block);
             hold_block.set_rotation(0);

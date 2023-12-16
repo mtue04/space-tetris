@@ -3,6 +3,7 @@
 void Renderer::init(SDL_Window* window) {
 	small_font = TTF_OpenFont("assets/munro-small.ttf", 30);
 	medium_font = TTF_OpenFont("assets/munro-small.ttf", 40);
+	cd_font = TTF_OpenFont("assets/KungFuMaster.otf", 50);
 
 	if (small_font == nullptr || medium_font == nullptr)
 		cerr << "Tetris could not load fonts. SDL_ttf error: " << TTF_GetError() << endl;

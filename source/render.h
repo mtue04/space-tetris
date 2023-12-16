@@ -10,6 +10,7 @@ class Renderer {
 public:
     TTF_Font* small_font;
     TTF_Font* medium_font;
+    TTF_Font* cd_font;
 
     SDL_Renderer* renderer = nullptr;
     void init(SDL_Window* window);

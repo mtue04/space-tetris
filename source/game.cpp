@@ -44,7 +44,7 @@ bool Game::init() {
 	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
 	bg_music = new Sounds();
-	bg_music->load_music("assets/sound/music-bg1.mp3");
+	bg_music->load_music("assets/sound/music-bg.mp3");
 	bg_music->play_music();
 
 	input_handle = new InputHandle;
